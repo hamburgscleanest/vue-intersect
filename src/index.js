@@ -1,11 +1,3 @@
-import Vue from 'vue'
-
-const warn = msg => {
-  if (!Vue.config.silent) {
-    console.warn(msg)
-  }
-}
-
 export default {
   name: 'intersect',
   abstract: true,
@@ -26,7 +18,7 @@ export default {
       default: () => '0px 0px 0px 0px'
     }
   },
-  mounted () {
+  mounted() {
     this.observer = new IntersectionObserver(
       entries => {
         if (!entries[0].isIntersecting) {
@@ -46,23 +38,24 @@ export default {
 
     this.$nextTick(() => {
       if (this.$slots.default && this.$slots.default.length > 1) {
-        warn(
+        console.warn(
           '[VueIntersect] You may only wrap one element in a <intersect> component.'
         )
       } else if (!this.$slots.default || this.$slots.default.length < 1) {
-        warn(
+        console.warn(
           '[VueIntersect] You must have one child inside a <intersect> component.'
         )
+
         return
       }
 
       this.observer.observe(this.$slots.default[0].elm)
     })
   },
-  destroyed () {
+  destroyed() {
     this.observer.disconnect()
   },
-  render () {
+  render() {
     return this.$slots.default ? this.$slots.default[0] : null
   }
 }
