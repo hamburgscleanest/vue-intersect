@@ -14,11 +14,11 @@ export default {
       type: Array,
       required: false,
       default: function _default() {
-        return [0.2];
+        return [0, 0.2];
       }
     },
     root: {
-      type: HTMLElement,
+      type: typeof HTMLElement !== 'undefined' ? HTMLElement : Object,
       required: false,
       default: function _default() {
         return null;
@@ -32,7 +32,7 @@ export default {
       }
     }
   },
-  created: function created() {
+  mounted: function mounted() {
     var _this = this;
 
     this.observer = new IntersectionObserver(function (entries) {
@@ -48,19 +48,16 @@ export default {
       root: this.root,
       rootMargin: this.rootMargin
     });
-  },
-  mounted: function mounted() {
-    var _this2 = this;
 
     this.$nextTick(function () {
-      if (_this2.$slots.default && _this2.$slots.default.length > 1) {
+      if (_this.$slots.default && _this.$slots.default.length > 1) {
         warn('[VueIntersect] You may only wrap one element in a <intersect> component.');
-      } else if (!_this2.$slots.default || _this2.$slots.default.length < 1) {
+      } else if (!_this.$slots.default || _this.$slots.default.length < 1) {
         warn('[VueIntersect] You must have one child inside a <intersect> component.');
         return;
       }
 
-      _this2.observer.observe(_this2.$slots.default[0].elm);
+      _this.observer.observe(_this.$slots.default[0].elm);
     });
   },
   destroyed: function destroyed() {
